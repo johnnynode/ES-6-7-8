@@ -1,0 +1,174 @@
+<script>
+  'use strict';
+
+  // test0();
+  function test0() {
+    {
+      var a = 12;
+      let b = 15;
+    }
+    console.log('test0 --------- begin');
+    console.log(a); // 12
+    console.log(b); // Uncaught ReferenceError: b is not defined
+    console.log('test0 --------- end');
+    
+  }
+
+  // test1(); // 测试块级作用域
+  function test1(){
+    {
+      var a = 12;
+      let b = 15;
+      {
+        console.log('test1 --------- start');
+        console.log(a); // 12
+        console.log(b); // 15
+        console.log('test1 --------- end');
+      }
+    }
+  }
+
+  // test2(); // var 在for循坏中定义的变量，【在for外仍有效】
+  function test2() {
+    for(var i=0;i<5;i++) {}
+    console.log(i); // 5    
+  }
+
+  // test3(); // let 在for循坏中定义的变量，【在for外无效】
+  function test3() {
+    for(let i=0;i<5;i++){}
+    console.log(i); // Uncaught ReferenceError: i is not defined
+  }
+
+  // test4(); // var 定义的变量可进行变量提升
+  function test4() {
+    fun();
+    function fun(){
+      console.log(a); // undefined
+      var a = 12;
+    }
+  }
+
+  // test5(); // let 定义的变量不会被【提升】，按顺序执行
+  function test5() {
+    fun();
+    function fun() {
+      console.log(a); // Uncaught ReferenceError: a is not defined
+      let a = 12;
+    }
+  }
+
+  // test6(); // 变量在外部定义后，在内部输出，然后再次使用let关键词声明，那么之前输出会【失效】报错
+  function test6() {
+    var a = 18;
+    var b = 10;
+    fun();
+    function fun(){
+      console.log(b); // 10
+      console.log(a); // Uncaught ReferenceError: a is not defined
+      let a;
+    }
+  }
+
+  // test7(); // 使用let声明的变量唯一，不能重复声明
+  function test7() {
+    let a;
+    var a; // Uncaught SyntaxError: Identifier 'a' has already been declared
+  }
+
+  // test8(); // 立即执行函数
+  function test8() {
+    var config = (function () {
+      var res = [];
+      res.push(1);
+      res.push(2);
+      res.push(3);
+      return res;
+    })();
+
+    console.log(config); // [1,2,3]
+  }
+
+  // test9(); // {} 块级作用域等效于立即执行函数
+  function test9() {
+    let config;
+    {
+      config = [];
+      config.push(1);
+      config.push(2);
+      config.push(3);
+    }
+    console.log(config); // [1,2,3]
+  }
+
+  // test10(); // 严格模式下，函数不会被提升
+  function test10() {
+    function a(){console.log(1);}
+    (function () {
+      a(); // 去除'use strict' 之后 报错：a is not a function，加上'use strict'之后正常，输出1
+      if(false) {
+        function a(){console.log(2);} // 此处重新声明和赋值了一个a函数
+      }
+    })();
+  }
+
+  // test11(); // var 在for循环中的变量会维持最后一个状态
+  function test11() {
+    var arr = [];
+    for(var i=0;i<5;i++) {
+      arr.push(function () {
+        console.log(i);
+      })
+    }
+    arr[1](); // 5 
+  }
+
+  // test12(); // 使用自执行函数+闭包的形式可保存循环中的变量状态
+  function test12() {
+    var arr = [];
+    for(var i=0;i<5;i++) {
+      arr.push((function (i) {
+        return function () {
+          console.log(i);
+        }
+      })(i));
+    }
+    arr[1]();
+  }
+
+  // test13(); // 使用let可维持在for循环中的变量状态
+  function test13() {
+    var arr = [];
+    for(let i=0;i<5;i++) {
+      arr.push(function () {
+        console.log(i);
+      })
+    }
+    arr[1](); // i
+  }
+
+  // test14(); // 使用const定义的是常量不可被修改，而指针对象的地址不可被修改，其属性可以被修改
+  function test14() {
+    const a = {
+      name:'J'
+    };
+    a.name = 'Z';
+    a.age = 10;
+    console.log(a); // {name: "Z", age: 10}
+    a = {}; // 尝试修改引用的地址
+    console.log(a); // Uncaught TypeError: Assignment to constant variable.
+  }
+
+  // test15(); // 使用Object的freeze进行冻结对象, 严格模式下会报错，非严格模式下无法修改
+  function test15() {
+    const a = {
+      name:'K'
+    }
+    a.age = 13;
+    console.log(a); // {name: "K", age: 13}
+    Object.freeze(a);
+    a.age = 14;
+    console.log(a); // Uncaught TypeError: Cannot assign to read only property 'age' of object '#<Object>'
+  }
+  
+</script>
