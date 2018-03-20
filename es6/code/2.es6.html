@@ -1,0 +1,57 @@
+<script>
+  'use strict';
+
+  // User 类
+  class User {
+    constructor(name,age) {
+      this.name = name;
+      this.age = age;
+    }
+
+    static getName() {
+      return 'User';
+    }
+
+    static getAge() {
+      return this.age;
+    }
+
+    setName(name) {
+      this.name = name;
+    }
+
+    setAge(age) {
+      this.age = age;
+    }
+
+    get info() {
+      return 'name:' + this.name + ' | age:' + this.age;
+    }
+  }
+
+  // Manager 类
+  class Manager extends User{
+    constructor(name,age,password){
+      super(name,age);
+      this.password = this.password;
+    }
+
+    changePwd(pwd) {
+      return this.password = pwd;
+    }
+
+    get info() {
+      var info = super.info; // 使用super继承父级 get
+      return info + ' === new';
+    }
+  }
+  // typeof User:  function  typeof Manager:  function
+  console.log('typeof User: ', typeof User, ' typeof Manager: ', typeof Manager); 
+
+  let manager = new Manager('Li', 22, '123456');
+  manager.setAge(23);
+  console.log(manager.info); // name:Li | age:23 === new
+  console.log(User.prototype);
+  console.log(Manager.prototype); 
+  
+</script>

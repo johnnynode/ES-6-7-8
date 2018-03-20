@@ -1,0 +1,52 @@
+<script>
+  test0();
+  function test0() {
+    // 构造函数
+    function User(name,age) {
+      this.name = name;
+      this.age = age;
+    }
+    // 原型
+    User.prototype = {
+      getName:function(){
+        return 'User';
+      },
+      setName:function(name){
+        this.name = name;
+      },
+      getAge:function(){
+        return this.age;
+      },
+      setAge:function(age){
+        this.age = age;
+      }
+    }
+
+    // 取值函数和存执函数
+    Object.defineProperty(User.prototype,'info', {
+      get() {
+        return 'name:' + this.name + ' | age:' + this.age;
+      }
+    });
+
+    var user = new User('Joh', 26);
+    console.log(user); // User {name: "Joh", age: 26}
+
+    // 子类
+    function Manager(name, age, password) {
+      User.call(this, name, age);
+      this.password = password;
+    }
+    
+    Manager.__proto__ = User; // 继承静态方法
+    Manager.prototype = Object.create(User.prototype); // 继承prototype原型方法
+    Manager.prototype.changePwd = function (pwd) {
+      this.password = pwd;
+    };
+    var manager = new Manager('Li', 22, '123456');
+    manager.setAge(23);
+    console.log(manager.info); // name:Li | age:23
+    console.log(User.prototype); // 不变
+    console.log(Manager.prototype); // {changePwd:function(){}, info:"name:undefined | age:undefined", __proto__:指向Manager.prototype}
+  }
+</script>

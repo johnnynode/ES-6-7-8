@@ -1,0 +1,23 @@
+<script>
+  'use strict';
+  test0();
+  function test0() {
+    let user = new class User {
+      constructor(name) {
+        this.name = name;
+      }
+    }('Joh');
+    console.log(user); // User {name: "Joh"}
+  };
+
+  // test1();
+  function test1() {
+    var man = new Man(); // 此处报错，使用class声明的类不会被提升 Uncaught ReferenceError: Man is not defined
+    class Man {
+      constructor(name){
+        this.name = name;
+      }
+    }
+  };
+
+</script>
