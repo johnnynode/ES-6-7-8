@@ -1,0 +1,203 @@
+<script>
+  // test0(); // 普通的异步嵌套
+  function test0() {
+    function asyncFun(a,b,callback) {
+      setTimeout(function () {
+        callback(a+b);
+      },200);
+    }
+
+    asyncFun(1,2, function (res) {
+      if(res > 2) {
+        asyncFun(res, 2, function (res) {
+          if(res > 4) {
+            asyncFun(res, 2, function (res) {
+              console.log('ok');
+              console.log(res);
+            })
+          }
+        })
+      }
+    });
+  }
+
+  // test1(); // 使用promise来优雅处理异步回调
+  function test1() {
+    function asyncFun(a,b) {
+      return new Promise(function (resolve, reject) {
+        setTimeout(function() {
+          resolve(a + b);
+        },200);
+      })
+    }
+
+    asyncFun(1,2)
+    .then(function (res) {
+      if(res > 2) {
+        return asyncFun(res, 2);
+      }
+    })
+    .then(function (res) {
+      if(res > 4) {
+        return asyncFun(res, 2);
+      }
+    })
+    .then(function (res) {
+      console.log('ok');
+      console.log(res);
+    })
+    .catch(function (error) {
+      console.log(error);
+    })
+  }
+
+  // test2();
+  function test2() {
+    function asyncFun(a,b) {
+      return new Promise(function (resolve, reject) {
+        // 模拟异常判断
+        if(typeof a !== 'number' || typeof b !== 'number') {
+          reject(new Error('no number'));
+        }
+        setTimeout(function() {
+          resolve(a + b);
+        },200);
+      })
+    }
+
+    asyncFun(1,2)
+    .then(function (res) {
+      if(res > 2) {
+        return asyncFun(res, 2);
+      }
+    },function (err) {
+      console.log('first err: ', err);
+    })
+    .then(function (res) {
+      if(res > 4) {
+        return asyncFun(res, 'a');
+      }
+      console.log('......');
+    },function (err) {
+      console.log('second err: ', err);
+    })
+    .then(function (res) {
+      console.log('ok');
+      console.log(res);
+    },function (err) {
+      console.log('third err: ', err);
+    })
+    .catch(function (error) {
+      console.log(error);
+    })
+    .finally(function () {
+      console.log('finally: ', 1+2);
+    });
+  }
+
+  // test3();
+  function test3() {
+    function asyncFun(a,b) {
+      return new Promise(function (resolve, reject) {
+        // 模拟异常判断
+        if(typeof a !== 'number' || typeof b !== 'number') {
+          reject(new Error('no number'));
+        }
+        setTimeout(function() {
+          resolve(a + b);
+        },200);
+      })
+    }
+
+    asyncFun(1,2)
+    .then(function (res) {
+      if(res > 2) {
+        return asyncFun(res, 2);
+      }
+    })
+    .then(function (res) {
+      if(res > 4) {
+        return asyncFun(res, 'a');
+      }
+      console.log('......');
+    })
+    .then(function (res) {
+      console.log('ok');
+      console.log(res);
+    })
+    .catch(function (error) {
+      console.log('catch: ', error);
+    })
+    .finally(function () {
+      console.log('finally: ', 1+2);
+    });
+  }
+
+  // test4(); // 测试promise.all
+  function test4() {
+    function asyncFun(a,b) {
+      return new Promise(function (resolve, reject) {
+        setTimeout(function() {
+          resolve(a + b);
+        },200);
+      })
+    }
+
+    var promise = Promise.all([asyncFun(1,2), asyncFun(2,3), asyncFun(3,4)])
+    promise.then(function (res) {
+      console.log(res);  // [3, 5, 7]
+    });
+  }
+
+  // test5(); // 测试promise.race 找到执行最快的
+  function test5 () {
+    function asyncFun(a,b,time) {
+      return new Promise(function (resolve, reject) {
+        setTimeout(function() {
+          resolve(a + b);
+        },time);
+      })
+    }
+
+    var promise = Promise.race([asyncFun(1,2,10), asyncFun(2,3,6), asyncFun(3,4,200)])
+    promise.then(function (res) {
+      console.log(res);  // 5
+    });
+  }
+
+  // test6(); // 测试 Promise.resolve() 静态方法
+  function test6() {
+    var p = Promise.resolve('hello');
+    p.then(function (res) {
+      console.log(res); // hello
+    });
+  }
+
+  // test7(); // 测试 Promise.resolve() 相当于的方法
+  function test7() {
+    var p = new Promise(function (resolve, reject) {
+      resolve('hello2');
+    })
+    p.then(function (res) {
+      console.log(res); // hello2
+    });
+  }
+
+  // test8(); // 测试 Promise.reject
+  function test8() {
+    var p = Promise.reject('err')
+    p.then(null, function (res) {
+      console.log(res); // err
+    });
+  }
+
+  test9(); // 测试 等同 Promise.reject
+  function test9() {
+    var p = new Promise(function (resolve, reject) {
+      reject('err2');
+    })
+    p.then(null, function (res) {
+      console.log(res); // err
+    });
+  }
+</script>

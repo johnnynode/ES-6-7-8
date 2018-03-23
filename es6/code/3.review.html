@@ -1,0 +1,78 @@
+<script>
+  'use strict';
+
+  class User{
+    constructor(name, password) {
+      this.name = name;
+      this.password = password;
+    }
+
+    send() {
+      let name = this.name;
+      return new Promise(function (resolve, reject) {
+        setTimeout(function () {
+          if(name === 'leo') {
+            resolve('send success');
+          }else{
+            reject('send error');
+          }
+        });
+      });
+    }
+
+    validatePwd() {
+      let pwd = this.password;
+      return new Promise(function (resolve, reject) {
+        setTimeout(function () {
+          if(pwd === '123') {
+            resolve('validatePwd success');
+          }else{
+            reject('validatePwd error');
+          }
+        });
+      })
+    }
+  }
+
+  let user1 = new User('Joh');
+  user1.send()
+    .then(function (res) {
+      console.log(res);
+    })
+    .catch(function (err) {
+      console.log(err);
+    });
+
+  let user2 = new User('leo');
+  user2.send()
+    .then(function (res) {
+      console.log(res);
+    })
+    .catch(function (err) {
+      console.log(err);
+    });
+
+  let user3 = new User('leo', '123');
+  user3.validatePwd()
+    .then(function (res) {
+      return user3.validatePwd();
+    })
+    .then(function (res) {
+      console.log(res);
+    })
+    .catch(function(error) {
+      console.log(error);
+    });
+
+  let user4 = new User('leo', '1234');
+  user4.validatePwd()
+    .then(function (res) {
+      return user4.validatePwd();
+    })
+    .then(function (res) {
+      console.log(res);
+    })
+    .catch(function(error) {
+      console.log(error);
+    });
+</script>
