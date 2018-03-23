@@ -1,0 +1,55 @@
+<script>
+  'use strict';
+  // test0();
+  function test0() {
+    var obj = {
+      getName:function(firstName,lastName){
+        return {firstName: firstName, lastName: lastName}
+      }
+    }
+  }
+
+  // test1();
+  function test1() {
+    var obj = {
+      getName(firstName,lastName){
+        return {firstName,lastName};
+      }
+    }
+  }
+
+  // 简化写set和get方法
+  test2();
+  function test2() {
+    var obj = {
+      set name(name) {
+        this.name = name;
+      },
+      get name() {
+        return this.name;
+      }
+    }
+  }
+
+  test3();
+  function test3() {
+    var obj = {
+      name:1
+    };
+    obj['x'] = 2;
+    obj.y = 3;
+  }
+
+  test31(); // 动态的添加属性，这样让代码更少更方便
+  function test31() {
+    var obj = {
+      name:1,
+      ['x']:2,
+      ['y']:3
+    }
+  }
+
+  
+  
+
+</script>
