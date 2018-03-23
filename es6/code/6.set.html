@@ -1,0 +1,95 @@
+<script>
+  'use strict';
+
+  // set 的值不可重复，数组的值可以重复
+  // test0();
+  function test0() {
+    let arr = [1,2,3,'5','5'];
+    let st = new Set(arr);
+    console.log(st); // 可以通过set来去除数组的重复的值，返回的是一个伪数组
+    console.log(st.size); // 4
+  }
+
+  // test1();
+  function test1() {
+    let st = new Set();
+    var u = {name:'Joh'};
+    st.add(u);
+    let bool = st.delete(u);
+    console.log(bool); // true;
+  }
+
+  // test2(); // 连续添加
+  function test2() {
+    let st = new Set();
+    var u = {name:'Joh'};
+    var r = {name:'Lily'};
+    st.add(u).add(r);
+    let bool = st.delete(r);
+    console.log(bool); // true
+    console.log(st.has(r)); // false
+    console.log(st.has(u)); // true;
+  }
+
+  // test3(); // 删除全部的值
+  function test3() {
+    let st = new Set();
+    var u = {name:'Joh'};
+    var r = {name:'Lily'};
+    st.add(u).add(r);
+    st.clear();
+    console.log(st.size); // 0
+  }
+
+  // test4(); // 使用Array.from方法把伪数组变为数组
+  function test4() {
+    let arr = ['xxx', 'yyyy', 'yyyy'];
+    let newArr = Array.from(new Set(arr)); 
+    console.log(Array.isArray(newArr)); // true
+    console.log(newArr); // ["xxx", "yyyy"]
+  }
+
+  // test5(); // Set 原型上的Symbol.iterator 和 values 是同一个值
+  function test5() {
+    console.log(Set.prototype[Symbol.iterator] === Set.prototype.values); // true
+    let st = new Set(['xxx', 'yyyy', 'yyyy', 'John']);
+    for(let k of st) {
+      console.log(k); // 依次输出 xxx yyyy John 可以直接遍历，兼容map的数据结构
+    }
+  }
+
+  // test6();
+  function test6() {
+    let st = new Set(['xxx', 'yyyy', 'yyyy', 'John']);
+    console.log(st.size); // 3
+    let itKeys = st.keys();
+    for(let k of itKeys) {
+      console.log(k); // 依次输出 xxx yyyy John
+    }
+    console.log('>>>>>');
+    let itVals = st.values();
+    for(let v of itVals) {
+      console.log(v); // 依次输出 xxx yyyy John
+    }
+  }
+
+  // test7(); // set 的entries 实体对象，是个键和值的数组结构
+  function test7() {
+    let st = new Set(['xxx', 'yyyy', 'yyyy', 'John']);
+    let entriesIt = st.entries(); // 
+    for(let v of entriesIt) {
+      console.log(v); // 依次输出 ["xxx", "xxx"] ["yyyy", "yyyy"] ["John", "John"]
+    }
+  }
+
+  test8();
+  function test8() {
+    let st = new Set();
+    console.log(NaN === NaN); // false , 此处 NaN 是不全等的，理应可以添加多个，不算重复，但是这里是个特例
+    st.add(NaN).add(NaN).add(NaN);
+    for(let v of st) {
+      console.log(v); // 只输出一个 NaN 
+    }
+  }
+  
+</script>
