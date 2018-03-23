@@ -1,0 +1,46 @@
+<script>
+  'use strict';
+  // test0(); // 判断两个对象之间是否全等
+  function test0() {
+    console.log(Object.is({},{}), {} === {}); // false, false
+    console.log(Object.is(NaN,NaN), NaN === NaN); // true, false
+    console.log(Object.is(+0,-0), +0 === -0); // false, true
+  }
+  
+  // test1(); // 两个参数，把第二个参数中可枚举的属性拷贝到第一个参数对象中, 仅限于可枚举的属性，如果有多个参数，那么同样拷贝
+  function test1() {
+    var obj = {};
+    var obj2 = Object.assign(obj,{name:'Joh'},{age:10});
+
+    console.log(obj === obj2, obj); // true, {name:'Joh', age:10}
+    console.log(Object.is(obj,obj2)); // true
+  }
+
+  // test2();
+  function test2() {
+    const DEFAULT_OPTIONS = {
+      name:"Joh"
+    };
+    function test(opts) {
+      let options = Object.assign({}, DEFAULT_OPTIONS, opts);
+      console.log(options);
+    }
+
+    test(); // {name: "Joh"}
+
+    test({name:"Lily",age:10}); // {name: "Lily", age: 10}
+
+  }
+
+  test3();
+  function test3() {
+    var skey1 = Symbol('test');
+    var skey2 = Symbol('test');
+    var obj = {};
+    Object.assign(obj,{name:'Joh'},{age:10},{[skey1]: 'I am test1'},{[skey2]: 'I am test2'}); // 拷贝
+    // 验证Symbol的拷贝成功
+    console.log(obj[skey1]); // I am test
+    console.log(obj); // {name: "Joh", age: 10, Symbol(test): "I am test1", Symbol(test): "I am test2"}
+  }
+
+</script>
