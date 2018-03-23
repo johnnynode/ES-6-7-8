@@ -1,0 +1,45 @@
+<script>
+  'use strict';
+
+  // test0(); // test for of 循环
+  function test0() {
+    let arr = ['a', 'b', 'c'];
+    for(let item of arr) {
+      console.log(item); // 顺序输出 a b c
+    }
+  };
+
+  // 如果一个对象中具有Symbol.iterator就可以被for-of消费
+  // test1(); // 测试 Symbol.iterator 属性， 数组调用这个属性返回一个方法，再调用这个方法会返回一个iterator对象
+  function test1() {
+    let arr = ['a', 'b', 'c'];
+    var iterator = arr[Symbol.iterator]();
+    // next 方法返回done表示是否完成
+    console.log(iterator.next()); // {value: "a", done: false}
+    console.log(iterator.next()); // {value: "b", done: false}
+    console.log(iterator.next()); // {value: "c", done: false}
+    console.log(iterator.next()); // {value: undefined, done: true}
+    console.log(iterator.next()); // {value: undefined, done: true}
+  }
+
+  // test2(); // 测试 Symbol.iterator 属性， 数组调用这个属性返回一个方法，再调用这个方法会返回一个iterator对象
+  function test2() {
+    let arr = ['a', 'b', 'c'];
+    var iterator = arr[Symbol.iterator]();
+    // next 方法返回done表示是否完成
+    var next = iterator.next();
+    while(!next.done) {
+      console.log(next);
+      next = iterator.next();
+    };
+  }
+
+  test3();
+  function test3() {
+    'use '
+  }
+
+  
+
+
+</script>
