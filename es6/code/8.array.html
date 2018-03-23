@@ -1,0 +1,163 @@
+<script>
+  'use strict';
+  // test0();
+  function test0() {
+    let obj = {
+      '0':'h',
+      '1':'i',
+      'length':2
+    };
+    let arr = Array.from(obj);
+    console.log(Array.isArray(arr)); // true
+    console.log(arr); // ["h", "i"]
+  }
+
+  // test1();
+  function test1() {
+    let obj = {
+      '0':'h',
+      '1':'i',
+      'length':2
+    };
+    let arr = Array.from(obj,function(item, index) {
+      // 对返回的值进行处理
+      return item + '...'
+    });
+    console.log(arr); // ["h...", "i..."]
+  }
+
+  // test2();
+  function test2() {
+    var set = new Set(['me','book','Joh']);
+    var arr = Array.from(set);
+    console.log(arr); // ["me", "book", "Joh"]
+  }
+
+  // test3();
+  function test3() {
+    // dom节点同样的可以转化
+    // 所有的实现了iterator接口的都可以转换
+  }
+
+  // test4();
+  function test4() {
+    var arr = new Array(5); // 数组之前的这种形式和字符串等类型的操作不统一，得到的只是长度为5的空数组
+    console.log(arr); // [empty × 5]
+
+    var arr2 = Array.of(12);
+    console.log(arr2);// [12]
+
+    var arr3 = Array.of(12,3,5,22);
+    console.log(arr3); // [12, 3, 5, 22]
+  }
+
+  // test5(); // find 查找符合函数的标准，返回一个真值，第一个就符合
+  function test5() {
+    var arr = [undefined, 22,33,44];
+    var val = arr.find(function () {
+      return true;
+    });
+    console.log(val); // undefined 始终返回第一个值，无论是0,'', NaN, undefined, null 都返回第一个值
+  }  
+
+  // test51();
+  function test51() {
+    var arr = [20, 22,33,44];
+    var val = arr.find(function () {
+      return false;
+    });
+    console.log(val); // undefined
+  }
+
+  // test52();
+  function test52() {
+    var arr = [21, 22, 33, 44];
+    var val = arr.find(function (value, index, arr) {
+      return value > 22;
+    });
+    console.log(val); // 33
+  }
+
+  // test6(); // findIndex
+  function test6() {
+    var arr = [21, 22, 33, 44];
+    var val = arr.findIndex(function (value, index, arr) {
+      return value > 22;
+    });
+    console.log(val); // 2
+  }
+
+  // test7() // findIndex 可以解决一些indexOf 无法解决的问题
+  function test7() {
+    var arr = [NaN];
+    var res1 = arr.indexOf(NaN);
+    var res2 = arr.findIndex(function (v) {
+      return Object.is(NaN, v);
+    });
+
+    console.log(res1); // -1
+    console.log(res2); // 0
+  }
+
+  // test8(); // copyWithin 操作原数组 (起始索引,拷贝值的索引起点，拷贝值的索引终点), 将拷贝的值替换原值 ,注意左闭右开
+  function test8() {
+    // 替换多个值
+    var arr1 = [1,2,3,4,5,6,7];
+    arr1.copyWithin(1,5,7);
+    console.log(arr1); //  [1, 6, 7, 4, 5, 6, 7]
+
+    // 替换一个值的不同表示1
+    var arr2 = [1,2,3,4,5,6,7];
+    arr2.copyWithin(2,5,6); // 将6替换3
+    console.log(arr2); //  [1, 2, 6, 4, 5, 6, 7]
+
+    // 替换一个值的不同表示2 从后面数，最后一个是-1，倒数第二个是-2
+    var arr3 = [1,2,3,4,5,6,7];
+    arr3.copyWithin(2,-2,-1); 
+    console.log(arr3); // [1,2,6,4,5,6,7]
+
+    // 替换一个值的不同表示3 前后混合使用
+    var arr3 = [1,2,3,4,5,6,7];
+    arr3.copyWithin(2,5,-1); 
+    console.log(arr3); // [1,2,6,4,5,6,7]
+  }
+
+  // test9(); // fill(默认填充值，填充起始索引，填充结束索引) 注意区间的左闭右开
+  function test9() {
+    var arr1 = [1,2,3,4,5,6,7];
+    arr1.fill(10);
+    console.log(arr1); // [10, 10, 10, 10, 10, 10, 10]
+
+    var arr2 = [1,2,3,4,5,6,7];
+    arr2.fill(10,2,5); 
+    console.log(arr2); // [1, 2, 10, 10, 10, 6, 7]
+  }
+
+  // test10();
+  function test10() {
+    const arr1 = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', NaN];
+    console.log('%s', arr1.includes('c')) // true
+    console.log('%s', arr1.includes('z')) // false
+    console.log('%s', arr1.includes(NaN)) // true
+  }
+
+  test11();
+  function test11() {
+    // 函数的第二个参数表示判断的起始位置
+    const arr1 = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', NaN];
+    console.log('%s', arr1.includes('d', 1)) // true
+    console.log('%s', arr1.includes('d', 3)) // true
+    console.log('%s', arr1.includes('d', 4)) // false
+  }
+
+  test12(); 
+  function test12() {
+    // 第二个参数也可以是负数，表示从右数过来第几个，但是不改变判断搜索的方向，搜索方向还是从左到右。
+    const arr1 = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', NaN]
+    console.log('%s', arr1.includes('k', -1)); // false
+    console.log('%s', arr1.includes('k', -2)); // true
+    console.log('%s', arr1.includes('i', -3)); // false
+  }
+
+  
+</script>
