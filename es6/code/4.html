@@ -1,0 +1,73 @@
+<script>
+  'use strict';
+
+  // test0();
+  function test0() {
+    var obj = {
+      name:'Joh',
+      'my name': 'Johnny'
+    }
+    console.log(obj.name); // Joh
+    console.log(obj['my name']); // Johnny
+  }
+
+
+  // test1(); // Symbol 可以生成一个不会重复的值
+  function test1() {
+    let name1 = Symbol('name');
+    let name2 = Symbol('name');
+    console.log(name1 === name2); // false
+  }
+
+  // test2(); // Symol 类型值转换为String类型
+  function test2() {
+    let name1 = Symbol('name');
+    let name2 = Symbol('name');
+
+    console.log(name1.toString());// Symbol(name)
+    console.log(String(name2)); // Symbol(name)
+  }
+
+  // test3(); // 使用Symbol类型来表示对象的属性
+  function test3() {
+    let getName = Symbol('name');
+    let obj = {
+      [getName]() {
+        return 'Joh';
+      }
+    }
+    console.log(obj[getName]()); // Joh
+  }
+
+  // test4(); // 通过Symbol的方式来模拟私有属性
+  function test4() {
+    let name = Symbol('name');
+    let obj = {
+      age:22,
+      [name]:'Joh'
+    };
+
+    console.log(Object.keys(obj)); // 打印不出 类型为Symbol的[name]属性
+
+    // 使用for-in也打印不出 类型为Symbol的[name]属性
+    for(var k in obj) {
+      console.log(k);
+    }
+
+    // 使用 Object.getOwnPropertyNames 同样打印不出 类型为Symbol的[name]属性
+    console.log(Object.getOwnPropertyNames(obj)); 
+
+    // 使用 Object.getOwnPropertySymbols 可以
+    var key = Object.getOwnPropertySymbols(obj)[0];
+    console.log(obj[key]); // Joh
+    
+  }
+
+  test5(); // 生成Symbol.for 获取Symbol的值，使用Symbol.keyFor来返回之前的字符串
+  function test5() {
+    let name1 = Symbol.for('name');
+    let name2 = Symbol.for('name');
+    console.log(name1 === name2); // true
+    console.log(Symbol.keyFor(name1)); // name 备注：字符串类型的
+  }
+</script>
