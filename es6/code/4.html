@@ -39,7 +39,7 @@
     console.log(obj[getName]()); // Joh
   }
 
-  // test4(); // 通过Symbol的方式来模拟私有属性
+  // test4(); // 通过Symbol类型的属性具有一定的隐藏性
   function test4() {
     let name = Symbol('name');
     let obj = {
@@ -63,7 +63,7 @@
     
   }
 
-  test5(); // 生成Symbol.for 获取Symbol的值，使用Symbol.keyFor来返回之前的字符串
+  test5(); // 使用Symbol.for 获取Symbol的值，使用Symbol.keyFor来返回之前的字符串
   function test5() {
     let name1 = Symbol.for('name');
     let name2 = Symbol.for('name');
