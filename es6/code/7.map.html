@@ -1,0 +1,132 @@
+<script>
+  'use strict';
+  // test0();
+  function test0() {
+    var obj = {
+      'name':'Joh',
+      qq:'5222',
+      'full name':'Johnny'
+    };
+    
+    let map = new Map();
+    map
+      .set(obj, 'Hello map')
+      .set('haha', 12)
+      .set(52, obj)
+      .set(NaN, new Set([1,2,3]));
+
+    console.log(map);
+    console.log(map.size); // 4
+  }
+
+  // test1();
+  function test1() {
+    var obj = {
+      'name':'Joh',
+      qq:'5222',
+      'full name':'Johnny'
+    };
+    
+    var arr = [1,2];
+
+    let map = new Map();
+    // map 可以连续set
+    map
+      .set(obj,'11')
+      .set(11,3)
+      .set(12,'H')
+      .set(arr,'h');
+
+    var delRes = map.delete(obj); // map不可以连续 delete
+    console.log(delRes); // true
+    var hasBool1 = map.has(11);
+    console.log(hasBool1); // true
+    var hasBool2 = map.has(arr);
+    console.log(hasBool2); // true
+    console.log(map.size); // 3
+  }
+
+  // test2(); // NaN的特例
+  function test2() {
+    let map = new Map();
+    // map 可以连续set
+    map
+      .set(11,3)
+      .set(12,'H')
+      .set(NaN,'h1')
+      .set(NaN,'h2'); // 覆盖前值
+
+    console.log(map.get(NaN));  // h2
+
+    map.clear();
+    console.log(map.size); // 0
+  }
+
+  // test3(); // map 构造函数的参数
+
+  function test3() {
+    let map = new Map([
+      ['name','Joh'],
+      ['age',10]
+    ]);
+
+    let name = map.get('name');
+    let age = map.get('age');
+    console.log(name); // Joh
+    console.log(age); // 10
+
+    let keys = map.keys();
+
+    for(let k of keys) {
+      console.log(k); // 分别输出 name age
+    }
+
+    let values = map.values();
+
+    for(let v of values) {
+      console.log(v); // 分别输出 Joh 10
+    }
+  }
+
+  // test4();
+  function test4() {
+    let map = new Map([
+      ['name','Joh'],
+      ['age',10]
+    ]);
+
+    console.log(Set.prototype[Symbol.iterator] === Set.prototype.values); // true
+    console.log(Map.prototype[Symbol.iterator] === Map.prototype.values); // false
+    console.log(Map.prototype[Symbol.iterator] === Map.prototype.entries); // true
+    
+    let entries = map.entries();
+
+    for (let en of entries) {
+      console.log(en); // 分别输出 ['name','Joh']  ['age',10]
+    }
+  }
+
+  test5();
+  function test5() {
+    let map = new Map([
+      ['name','Joh'],
+      ['age',10]
+    ]);
+
+    var me = {
+      name:"Joh"
+    };
+
+    map.forEach(function (val, key) {
+      console.log(key, val); // 分别输出 name Joh 和 "age" 10
+    });
+
+    console.log('>>>>>');
+
+    map.forEach(function (val, key) {
+      // console.log(key, val); // 分别输出 name Joh 和 "age" 10
+      console.log(this); // {name: "Joh"} 此处的this就是传递进来的对象
+    }, me);
+  }
+
+</script>
