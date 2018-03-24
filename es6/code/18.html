@@ -1,0 +1,62 @@
+<script>
+  // 'use strict';
+
+  test0();
+  function test0() {
+    var obj = {name:'Joh'};
+    var proxy = new Proxy(obj, {
+      get (target, key) {
+        return 'test1';
+      },
+      set (target, key, value) {
+        target[key] = value
+      }
+    });
+
+    console.log(proxy.name); // test1
+    proxy.name = 'test2'; // 进行set设置
+    console.log(obj.name); // test2
+  }
+
+  // test1();
+  function test1() {
+    var obj = {name:'Joh',group:'g1',_type:'student'};
+    var proxy = new Proxy(obj, {
+      get (target, key) {
+        if(key[0]!== '_') {
+          // return Reflect.get(target,key); // 效果等同于下面的return语句
+          return target[key];
+        };
+      },
+      set (target, key, value) {
+        if(key[0]!== '_') {
+          // Reflect.set(target,key,value);
+          return target[key] = value;
+        }
+      },
+      deleteProperty(target, key) {
+        // 业务逻辑
+        if(key[0] !== '_') {
+          // Reflect.deleteProperty(target, key);
+          delete target[key];
+        }
+      }
+    });
+
+    console.log(proxy.name); // Joh
+    console.log(obj.name); // Joh
+    proxy.name = 'Lily'; // 在非严格模式下的赋值操作，严格模式将会报错
+    console.log(obj.name); // Lily
+
+    delete proxy.name; // 未能成功删除，因为上面内部有判断
+    console.log(obj.name); // undefined 成功删除
+    delete proxy.group;
+    console.log(obj.group); // undefined 成功删除
+    delete proxy._type;
+    console.log(obj._type); // student
+
+    proxy.color='red';
+    console.log(obj.color); // red
+  }
+  
+</script>
