@@ -62,4 +62,13 @@
     test([5,[]],12); // 5 3 4 12
     test([5,[2,6]],12); // 5 2 6 12
   }
+
+  test6(); // 注意陷阱
+  function test6() {
+    function test([x,y]=[1,2]) {
+      console.log(x,y);
+    }
+    test(); // 1 2
+    test([]); // undefined undefined
+  }
 </script>

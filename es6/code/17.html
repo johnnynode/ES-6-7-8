@@ -1,0 +1,40 @@
+<script>
+  'use strict';
+
+  test0();
+  function test0() {
+    (({x,y})=>{
+      console.log(x, y); // // undefined undefined
+    })({});
+
+    (({x=1,y=2})=>{
+      console.log(x,y); // 1 2
+    })({});
+
+    (({x=3, y=4}={})=>{
+      console.log(x,y); // 3 4
+    })();
+
+    // 注意陷阱
+    function test4({x,y}={x:100,y:200}) {
+      console.log(x,y);
+    }
+
+    test4({}); // undefined undefined
+    test4(); // 100 200
+  }
+
+  // test1(); // 结合使用
+  function test1() {
+    function test({x=1,y=2,z=3}={}, [a=11,b=22,c=33]=[],name='Joh') {
+      console.log(x,y,z,a,b,c,name);
+    }
+
+    test(); // 1 2 3 11 22 33 "Joh"
+  }
+
+
+
+
+
+</script>
