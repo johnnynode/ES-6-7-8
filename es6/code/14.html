@@ -1,0 +1,84 @@
+<script>
+  'use strict';
+  // test0();
+  function test0() {
+    var arr = [1,2,3];
+    var a = arr[0];
+    var b = arr[1];
+    var c = arr[2];
+    console.log(a,b,c); // 1 2 3
+  }
+
+  // test1(); // 一维数组的解构赋值
+  function test1() {
+    var arr = [1,2,3];
+    var [a,b,c] = arr;
+    console.log(a,b,c); // 1 2 3
+  }
+
+  // test2(); // 多维数组的解构赋值
+  function test2() {
+    let arr = [22, [5,8], 11];
+    let [a,[b,c],d] = arr;
+    console.log(a,b,c,d); // 22 5 8 11
+  }
+
+  // test3(); // 解构赋值用于变量的交换
+  function test3() {
+    let x = 11;
+    let y = 22;
+    [y,x] = [x,y];
+    console.log(x,y); // 22 11
+  }
+
+  // test4(); // 解构赋值中不完全的解析
+  function test4() {
+    let arr = [22, [5,8], 11];
+    let [a,[b],c] = arr;
+    console.log(a, b, c); // 22 5 11
+
+    let [m,[,n],o] = arr;
+    console.log(m, n, o); // 22 8 11
+  }
+
+  // test5(); // 不能被数组解析的值
+  function test5() {
+    let [m] = "";
+    console.log(m); // undefined;
+    let [x,y] = NaN; // NaN is not iterable. 不能被数组解析的值：NaN, undefined, null, {}
+  }
+
+  // test6(); // 实现了iterator接口的解析赋值
+  function test6() {
+    let [x,y] = new Set([22, 33]);
+    console.log(x,y); // 22 33
+  }
+
+  // test7(); // 所有实现了iterator的数据解构都能被解析
+  function test7() {
+    class Group{
+      constructor() {
+
+      }
+
+      next() {
+        return {value:'Joh', done: false};
+      }
+
+      [Symbol.iterator]() {
+        return this;
+      }
+    }
+    let group = new Group();
+    let [x,y,z,m,n] = group;
+    console.log(x,y,z,m,n);  // Joh Joh Joh Joh Joh 备注：这里如果类中的next的done为true，那么全为undefined
+  }
+
+  test8(); // ...运算符 转换成数组
+  function test8() {
+    var [x,w, ...y] = [1,2,3,4,5,6];
+    console.log(x,w, y); // 1 2 [3,4,5,6]
+  }
+
+
+</script>
