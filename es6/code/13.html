@@ -1,0 +1,91 @@
+<script>
+  'use strict';
+  // test0(); // 普通的函数
+  function test0() {
+    var fn = function () {};
+  }
+
+  // test1();
+  function test1() {
+    var fn2 = (name) => {
+      console.log('fn2');
+    };
+
+    // 一个参数可以不加括号
+    var fn3 = name => {
+      console.log('fn3');
+    }
+
+    fn2(); // fn2
+    fn3(); // fn3
+  }
+
+  // test2(); // 
+  function test2() {
+    setTimeout(function () {
+      console.log(this); // window
+    });
+
+    setTimeout(()=>{
+      console.log(this); // undefined
+    })
+  }
+
+  // test3();
+  function test3() {
+    class User{
+      constructor(name,age){
+        this.name = name;
+        this.age = age;
+      }
+      changeName(name) {
+        this.name = name;
+      }
+      changeAge(age) {
+        this.age = age;
+      }
+      change(name,age) {
+        let self = this;
+        (()=>{
+          this.name = name;
+          this.age = age;
+          console.log(self); // 在箭头函数中，this指向外面的对象
+        })();
+      }
+    }
+
+    var u = new User();
+    u.change('Joh', 10); // User {name: "Joh", age: 10}
+  }
+
+  // test4(); // 箭头函数中只包括一条return语句，则可以省略大括号
+  function test4() {
+    var fn = (n)=>{
+      return n*3
+    }
+    console.log(fn(3)); // 9
+
+    var fn2 = n => n*4;
+    console.log(fn2(3)); // 12
+  }
+
+  test5(); // 箭头函数中不能正常使用arguments属性
+  function test5() {
+    var fn = n => {
+      console.log(arguments[0]); 
+    }
+    fn(12); // undefined
+
+    var fn2 = n => {
+      console.log(n);
+    }
+    fn2(10); // 10
+  }
+
+  test6();
+  function test6() {
+    // 还要注意：箭头函数不能通过new关键字来实例化
+  }
+
+
+</script>
