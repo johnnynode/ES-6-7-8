@@ -1,7 +1,7 @@
 <script>
   // 'use strict';
 
-  test0();
+  // test0();
   function test0() {
     var obj = {name:'Joh'};
     var proxy = new Proxy(obj, {
@@ -58,5 +58,72 @@
     proxy.color='red';
     console.log(obj.color); // red
   }
+
+  // test2();  // has方法与in关键字的结合进行拦截
+  function test2() {
+    var obj = {name:"Joh",_name:"Lily"};
+    
+    var proxy = new Proxy(obj, {
+      has(target, key) {
+        if(key[0] === '_'){
+          return false;
+        } else {
+          return key in target;
+        }
+      }
+    });
+
+    console.log('has name attr: ', 'name' in proxy); // has name attr: true
+    console.log('has _name attr: ', '_name' in proxy); // has _name attr: false
+  }
+
+  // test3();
+  function test3() {
+    var obj = {name:"Joh",_name:"Lily", age:10, group:"g1"};
+    var proxy = new Proxy(obj, {
+      ownKeys (target) {
+        return Reflect.ownKeys(target).filter(key => key[0] !== '_');
+      }
+    });
+
+    for(var k in proxy) {
+      console.log(k); // 分别输出 name age group 过滤了 _name
+    }
+  }
+
+  test4(); // 对函数的操作拦截 1. 对函数调用的拦截，2. 对new关键字实例化的拦截
+  function test4() {
+    function test() {
+      console.log('hello world');
+    }
+    
+    var proxyFun = new Proxy(test,{
+      apply(target,ctx,args) {
+        console.log('proxy apply');
+        return Reflect.apply(target,ctx,args);
+      }
+    });
+
+    proxyFun(); // 分别输出 proxy apply 和 hello world
+    // proxyFun.apply(); // 同样，分别输出 proxy apply 和 hello world
+    // proxyFun.call(); // 同样，分别输出 proxy apply 和 hello world
+  }
+
+  // test41();
+  function test41() {
+    function User() {
+      console.log('this is a contructor');
+    }
+
+    var ClassProxy = new Proxy(User, {
+      construct(target,args) {
+        console.log('proxy construct');
+        return Reflect.construct(target,args);
+      }
+    });
+
+    new ClassProxy(); // 分别输出 proxy construct 和 this is a contructor
+  }
+  
   
 </script>
