@@ -1,0 +1,85 @@
+<script>
+  'use strict';
+  // test0(); // 之前普通的处理字符串的拼接方法
+  function test0() {
+    let hello = 'Hello';
+    let html = '<div>' + 
+      '<span>'+ hello +'</span>' + 
+      '</div>';
+
+    console.log(html); // <div><span>Hello</span></div>
+  }
+
+  // test1();
+  function test1() {
+    let name = 'Joh';
+    let qq = '56655';
+
+    function log() {
+      return 'Hi there!';
+    }
+    let html = `
+      <div>
+        <ul>
+            <li>${ name === 'Joh' ? 'is Joh' : 'not Joh'}</li>
+            <li>${qq}</li>
+            <li>${log()}</li>
+        <ul>
+      </div>
+    `
+    console.log(html);
+
+    /*
+    <div>
+        <ul>
+            <li>is Joh</li>
+            <li>56655</li>
+            <li>Hi there!</li>
+        <ul>
+    </div>   
+    */
+  }
+
+  // test2(); // tag函数与模板字符串的结合，导致模板字符串失效
+  function test2() {
+    function tag() {
+      return 'tag';
+    }
+    let name = "Joh";
+    var res = tag`hello ${name}`;
+    console.log(res); // tag
+  }
+
+  // test22();
+  function test22() {
+    function tag(strArr, arg1, arg2) {
+      console.log(strArr); //  ["hello ", "", " test", raw: Array(3)]
+      console.log(arg1); // Joh
+      console.log(arg2); // 10
+    }
+    let name = "Joh";
+    let age = 10;
+    tag`hello ${name}${age} test`;
+  }
+
+  test23(); // 安全处理
+  function test23() {
+    function safe(strArr) {
+      let res = '';
+      console.log(arguments);
+      for(var i=0, len = strArr.length; i < len; i++) {
+        res += strArr[i].replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        if(i < arguments.length -1) {
+          res += arguments[i + 1];
+        }
+      }
+      return res;
+    }
+    let name = 'Joh';
+    var result = safe`<p>hello ${name}</p>`;
+    console.log(result); // &ltp&gt;hello Joh&lt/p&gt;
+  }
+
+  
+
+</script>
