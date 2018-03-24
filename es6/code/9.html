@@ -19,19 +19,21 @@
   }
 
   // 简化写set和get方法
-  test2();
+  test2(); 
   function test2() {
     var obj = {
-      set name(name) {
+      set _name(name) {
         this.name = name;
       },
-      get name() {
+      get _name() {
         return this.name;
       }
     }
+    obj._name = 'Joh';
+    console.log(obj._name); // Joh
   }
 
-  test3();
+  // test3();
   function test3() {
     var obj = {
       name:1
@@ -40,7 +42,7 @@
     obj.y = 3;
   }
 
-  test31(); // 动态的添加属性，这样让代码更少更方便
+  // test31(); // 动态的添加属性，这样让代码更少更方便
   function test31() {
     var obj = {
       name:1,
