@@ -1,0 +1,27 @@
+<script>
+  'use strict';
+  // test0();
+  function test0() {
+    var str = 'Hello';
+    console.log(str.indexOf('o')); // 4
+    console.log(str.includes('e')); // true
+    console.log(str.startsWith('H')); // true
+    console.log(str.endsWith('e')); // false
+  }
+
+  // test1();
+  function test1() {
+    var str = 'Hello';
+    console.log(str.includes('e',1)); // true
+    console.log(str.startsWith('e',1)); // true
+    console.log(str.endsWith('l',3)); // true
+  }
+
+  test2();
+  function test2() {
+    var str = 'Hello';
+    var res = str.repeat(3);
+    console.log(res); // HelloHelloHello
+  }
+  
+</script>
